@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game running slowly or crashing — HeroCorp Support</title>
+<meta name="description" content="Troubleshoot performance problems, crashes, and graphical glitches.">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<header>
+  <a href="../index.html">← HeroCorp Support</a>
+  <div class="cat" style="margin-top:16px;">Technical</div>
+  <h1>Game running slowly or crashing</h1>
+  <div class="meta">Updated 02 May 2026</div>
+</header>
+<p>If the game is stuttering, crashing, or freezing, work through these in order.</p>
+<h2>1. Update graphics drivers</h2>
+<p>Outdated GPU drivers cause more than half the performance issues we see. Update directly from the manufacturer: NVIDIA, AMD, or Intel. Don't rely on Windows Update.</p>
+<h2>2. Drop graphics settings (in order of impact)</h2>
+<ol><li>Resolution scale (drop to 80% or 75%)</li><li>Shadow quality</li><li>Volumetric effects</li><li>Anti-aliasing</li><li>Texture quality</li></ol>
+<h2>3. Verify game files</h2>
+<p><strong>Steam:</strong> right-click → Properties → Installed Files → Verify integrity. <strong>Epic:</strong> Library → ⋯ → Verify. <strong>HeroCorp Launcher:</strong> Settings → Verify Files.</p>
+<h2>4. Check background processes</h2>
+<p>OBS recording, scheduled backups, Chrome with many tabs, Discord hardware acceleration, antivirus scans.</p>
+<h2>5. Crashes on launch</h2>
+<p>Verify files, run as administrator, disable controller injection software, update DirectX runtime and Visual C++ Redistributables.</p>
+<h2>6. Crashes mid-game</h2>
+<ul><li><strong>Overheating:</strong> check temps with HWMonitor. Over 90°C is concerning.</li><li><strong>Memory pressure:</strong> if you have 8GB RAM, close everything else.</li><li><strong>Unstable overclocks:</strong> try stock speeds.</li></ul>
+<h2>If you've tried everything</h2>
+<p>Send us a crash log from <code>%APPDATA%\HeroCorp\Logs\</code> and your DxDiag report. We can usually pinpoint the issue in one reply.</p>
+<footer>Still need help? <a href="../index.html">Contact support</a> · © 2026 HeroCorp Studios Ltd.</footer>
+</body>
+</html>
