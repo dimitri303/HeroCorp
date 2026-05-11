@@ -1,12 +1,491 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=/HeroCorp/hc/en-us/">
-<title>HeroCorp Help Center</title>
-<link rel="canonical" href="https://dimitri303.github.io/HeroCorp/hc/en-us/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HeroCorp · Hush</title>
+<meta name="description" content="HeroCorp is an independent game studio in Bristol. Hush, our PC flagship, is in closed beta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0c0a;
+  --bg-elev: #14130f;
+  --ink: #e8e3d6;
+  --ink-dim: #8a8377;
+  --ink-mute: #5a5449;
+  --accent: #e89958;
+  --accent-glow: rgba(232, 153, 88, 0.15);
+  --line: rgba(232, 227, 214, 0.08);
+  --line-hi: rgba(232, 227, 214, 0.18);
+  --display: 'Fraunces', 'Times New Roman', serif;
+  --jp: 'Noto Sans JP', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grain overlay for texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Ambient amber glow drifts slowly across the page */
+body::after {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
+  filter: blur(40px);
+  animation: drift 30s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.6; }
+  50% { transform: translate(-30%, 80px) scale(1.15); opacity: 1; }
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top nav */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+nav .brand {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; color: var(--ink-dim); }
+
+/* Hero */
+.hero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 80px;
+  align-items: center;
+  padding: 80px 0 60px;
+}
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 60px; padding: 60px 0; }
+}
+
+.hero-left .tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-left .tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 16px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(60px, 9vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+  color: var(--ink);
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.kanji {
+  font-family: var(--jp);
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  color: var(--ink-dim);
+  margin-bottom: 36px;
+  display: block;
+}
+
+.lede {
+  font-family: var(--display);
+  font-size: 19px;
+  line-height: 1.65;
+  color: var(--ink-dim);
+  max-width: 440px;
+  font-weight: 300;
+  margin-bottom: 40px;
+}
+
+.cta-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--line-hi);
+  color: var(--ink);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d0c0a;
+}
+
+.btn-primary:hover {
+  background: #f0a868;
+  color: #0d0c0a;
+  box-shadow: 0 0 32px var(--accent-glow);
+}
+
+.btn .arrow {
+  font-family: var(--mono);
+  font-size: 14px;
+  transition: transform 0.25s ease;
+}
+
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* Right side product card */
+.card {
+  position: relative;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  padding: 32px;
+  font-family: var(--mono);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: scan 4s ease-in-out infinite;
+}
+
+@keyframes scan {
+  0%, 100% { transform: translateX(-100%); opacity: 0; }
+  50% { transform: translateX(0); opacity: 1; }
+  90% { transform: translateX(100%); opacity: 0; }
+}
+
+.card-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin-bottom: 28px;
+  letter-spacing: 0.05em;
+}
+
+.card-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+
+.card-meta-item .label {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 6px;
+}
+
+.card-meta-item .value {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.card-status {
+  font-size: 11px;
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #4ade80;
+}
+
+/* Bottom strip */
+footer {
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+footer .links { display: flex; gap: 28px; }
+footer a {
+  color: var(--ink-mute);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+footer a:hover { color: var(--accent); }
+
+/* Decorative kanji watermark */
+.watermark {
+  position: fixed;
+  bottom: -40px;
+  left: -20px;
+  font-family: var(--jp);
+  font-size: 240px;
+  font-weight: 300;
+  color: var(--ink);
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 0;
+  line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .watermark { font-size: 160px; }
+  main { padding: 24px 24px; }
+}
+
+/* Subtle fade-in on load */
+.hero > * { animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.hero-left .tag { animation-delay: 0.05s; }
+.hero h1 { animation-delay: 0.15s; }
+.kanji { animation-delay: 0.25s; }
+.lede { animation-delay: 0.35s; }
+.cta-group { animation-delay: 0.45s; }
+.card { animation-delay: 0.55s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Help hint about the widget */
+.widget-hint {
+  position: fixed;
+  bottom: 110px;
+  right: 32px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  z-index: 999;
+  pointer-events: none;
+  animation: rise 1.5s ease 1.5s backwards;
+  text-align: right;
+}
+
+.widget-hint::after {
+  content: '↘';
+  display: block;
+  margin-top: 6px;
+  font-size: 16px;
+  color: var(--accent);
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(4px, 4px); }
+}
+
+@media (max-width: 600px) {
+  .widget-hint { display: none; }
+}
+</style>
 </head>
 <body>
-<p>Redirecting to <a href="/HeroCorp/hc/en-us/">HeroCorp Help Center</a>...</p>
+
+<div class="watermark">静</div>
+
+<main>
+  <nav>
+    <span class="brand">HEROCORP</span>
+    <span class="meta">BRISTOL · 2026</span>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="tag">Now in closed beta</div>
+      <h1>A quieter kind of <em>roguelike.</em></h1>
+      <span class="kanji">未来は静かだ &nbsp;·&nbsp; the future is quiet</span>
+      <p class="lede">Hush is a hand-drawn action roguelike from a small studio in Bristol. Eight years, seventeen mobile titles, and now our first for PC. Built for players who actually finish things.</p>
+      <div class="cta-group">
+        <a href="#" class="btn btn-primary">Join the beta <span class="arrow">→</span></a>
+        <a href="https://herocorp-71942.zendesk.com/hc/en-us/" class="btn">Player support</a>
+      </div>
+    </div>
+
+    <aside class="card">
+      <div class="card-label">// Current build</div>
+      <div class="card-title">Hush</div>
+      <div class="card-sub">PC · Closed Beta · v0.8.4</div>
+      <div class="card-meta">
+        <div class="card-meta-item">
+          <div class="label">Active players</div>
+          <div class="value">80,341</div>
+        </div>
+        <div class="card-meta-item">
+          <div class="label">Build size</div>
+          <div class="value">42.6 GB</div>
+        </div>
+        <div class="card-meta-item">
+          <div class="label">Patch</div>
+          <div class="value">2 days ago</div>
+        </div>
+        <div class="card-meta-item">
+          <div class="label">Next event</div>
+          <div class="value">14:00 UTC</div>
+        </div>
+      </div>
+      <div class="card-status">
+        <span class="status-dot"></span>
+        <span>SERVERS ONLINE · LDN-01, NYC-02, TYO-01</span>
+      </div>
+    </aside>
+  </section>
+
+  <footer>
+    <div>© 2026 HEROCORP STUDIOS LTD.</div>
+    <div class="links">
+      <a href="https://herocorp-71942.zendesk.com/hc/en-us/">Support</a>
+      <a href="#">Press</a>
+      <a href="#">Careers</a>
+      <a href="#">Discord</a>
+    </div>
+  </footer>
+</main>
+
+<div class="widget-hint">
+  Need help?<br>Talk to Brian
+</div>
+
+<!--
+============================================================
+ZENDESK WEB WIDGET EMBED GOES BELOW THIS LINE
+============================================================
+Paste the script snippet from Zendesk Admin Centre here.
+It will look something like:
+
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=YOUR_KEY_HERE"></script>
+
+The widget will appear automatically in the bottom-right corner.
+============================================================
+-->
+
 </body>
 </html>
