@@ -8,10 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/Hero1.png">
+<link rel="preload" as="image" href="assets/Hero2.png">
+<link rel="preload" as="image" href="assets/Hero3.png">
+<link rel="preload" as="image" href="assets/Hero4.png">
 <style>
 :root {
   --bg: #0d0c0a;
-  --bg-elev: #14130f;
+  --bg-elev: rgba(20, 19, 15, 0.72);
   --ink: #e8e3d6;
   --ink-dim: #8a8377;
   --ink-mute: #5a5449;
@@ -34,50 +38,83 @@ html, body {
   overflow-x: hidden;
 }
 
+/* HERO CAROUSEL BACKGROUND */
+.hero-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hero-bg .slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  animation: slide-cycle 40s infinite;
+  transform: scale(1.05);
+}
+
+.hero-bg .slide:nth-child(1) { background-image: url('assets/Hero1.png'); animation-delay: 0s; }
+.hero-bg .slide:nth-child(2) { background-image: url('assets/Hero2.png'); animation-delay: 10s; }
+.hero-bg .slide:nth-child(3) { background-image: url('assets/Hero3.png'); animation-delay: 20s; }
+.hero-bg .slide:nth-child(4) { background-image: url('assets/Hero4.png'); animation-delay: 30s; }
+
+@keyframes slide-cycle {
+  0%   { opacity: 0; transform: scale(1.05); }
+  5%   { opacity: 1; transform: scale(1.05); }
+  25%  { opacity: 1; transform: scale(1.10); }
+  30%  { opacity: 0; transform: scale(1.10); }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+
+/* Dark gradient overlay heavier on the left side where text sits */
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgba(13,12,10,0.88) 0%, rgba(13,12,10,0.55) 45%, rgba(13,12,10,0.45) 100%),
+    linear-gradient(180deg, rgba(13,12,10,0.4) 0%, transparent 30%, transparent 70%, rgba(13,12,10,0.55) 100%);
+  pointer-events: none;
+}
+
+/* Vignette */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(13,12,10,0.5) 100%);
+  pointer-events: none;
+}
+
 /* Grain overlay for texture */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 100;
-  opacity: 0.06;
+  z-index: 4;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
 
-/* Ambient amber glow drifts slowly across the page */
-body::after {
-  content: '';
-  position: fixed;
-  top: -20%;
-  left: 50%;
-  width: 800px;
-  height: 800px;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 65%);
-  filter: blur(40px);
-  animation: drift 30s ease-in-out infinite;
-}
-
-@keyframes drift {
-  0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.6; }
-  50% { transform: translate(-30%, 80px) scale(1.15); opacity: 1; }
-}
-
 main {
   position: relative;
-  z-index: 1;
-  max-width: 1100px;
+  z-index: 5;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 40px;
+  padding: 32px 48px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* Top nav */
 nav {
   display: flex;
   justify-content: space-between;
@@ -91,25 +128,20 @@ nav {
   border-bottom: 1px solid var(--line);
 }
 
-nav .brand {
-  color: var(--ink);
-  font-weight: 500;
-}
-
+nav .brand { color: var(--ink); font-weight: 500; }
 nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; color: var(--ink-dim); }
 
-/* Hero */
 .hero {
   flex: 1;
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 80px;
+  gap: 60px;
   align-items: center;
   padding: 80px 0 60px;
 }
 
-@media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; gap: 60px; padding: 60px 0; }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 48px; padding: 60px 0; }
 }
 
 .hero-left .tag {
@@ -126,8 +158,7 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
 
 .hero-left .tag::before {
   content: '';
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   background: var(--accent);
   border-radius: 50%;
   box-shadow: 0 0 16px var(--accent);
@@ -142,11 +173,12 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
 .hero h1 {
   font-family: var(--display);
   font-weight: 300;
-  font-size: clamp(60px, 9vw, 120px);
+  font-size: clamp(54px, 8vw, 108px);
   line-height: 0.95;
   letter-spacing: -0.04em;
   margin-bottom: 28px;
   color: var(--ink);
+  text-shadow: 0 4px 32px rgba(0,0,0,0.5);
 }
 
 .hero h1 em {
@@ -193,15 +225,13 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
   text-decoration: none;
   border: 1px solid var(--line-hi);
   color: var(--ink);
-  background: transparent;
+  background: rgba(13, 12, 10, 0.5);
+  backdrop-filter: blur(4px);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
-.btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
 
 .btn-primary {
   background: var(--accent);
@@ -215,18 +245,14 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
   box-shadow: 0 0 32px var(--accent-glow);
 }
 
-.btn .arrow {
-  font-family: var(--mono);
-  font-size: 14px;
-  transition: transform 0.25s ease;
-}
-
+.btn .arrow { font-family: var(--mono); font-size: 14px; transition: transform 0.25s ease; }
 .btn:hover .arrow { transform: translateX(4px); }
 
-/* Right side product card */
 .card {
   position: relative;
   background: var(--bg-elev);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--line);
   padding: 32px;
   font-family: var(--mono);
@@ -237,8 +263,7 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
   content: '';
   position: absolute;
   top: 0; left: 0;
-  width: 100%;
-  height: 1px;
+  width: 100%; height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   animation: scan 4s ease-in-out infinite;
 }
@@ -267,12 +292,7 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
   letter-spacing: -0.02em;
 }
 
-.card-sub {
-  font-size: 12px;
-  color: var(--ink-dim);
-  margin-bottom: 28px;
-  letter-spacing: 0.05em;
-}
+.card-sub { font-size: 12px; color: var(--ink-dim); margin-bottom: 28px; letter-spacing: 0.05em; }
 
 .card-meta {
   display: grid;
@@ -308,14 +328,12 @@ nav .meta { font-family: var(--jp); font-size: 12px; letter-spacing: 0.1em; colo
 }
 
 .status-dot {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   background: #4ade80;
   border-radius: 50%;
   box-shadow: 0 0 8px #4ade80;
 }
 
-/* Bottom strip */
 footer {
   padding-top: 28px;
   border-top: 1px solid var(--line);
@@ -339,41 +357,44 @@ footer a {
 }
 footer a:hover { color: var(--accent); }
 
-/* Decorative kanji watermark */
-.watermark {
+/* Slide indicator at bottom-left */
+.indicator {
   position: fixed;
-  bottom: -40px;
-  left: -20px;
-  font-family: var(--jp);
-  font-size: 240px;
-  font-weight: 300;
-  color: var(--ink);
-  opacity: 0.02;
-  pointer-events: none;
-  z-index: 0;
-  line-height: 1;
+  bottom: 110px;
+  left: 48px;
+  z-index: 6;
+  display: flex;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--ink-mute);
+  align-items: center;
 }
 
-@media (max-width: 860px) {
-  .watermark { font-size: 160px; }
-  main { padding: 24px 24px; }
+.indicator .dots { display: flex; gap: 6px; }
+
+.indicator .dot {
+  width: 24px; height: 1px;
+  background: var(--ink-mute);
+  opacity: 0.4;
+  animation: dot-cycle 40s infinite;
 }
 
-/* Subtle fade-in on load */
-.hero > * { animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
-.hero-left .tag { animation-delay: 0.05s; }
-.hero h1 { animation-delay: 0.15s; }
-.kanji { animation-delay: 0.25s; }
-.lede { animation-delay: 0.35s; }
-.cta-group { animation-delay: 0.45s; }
-.card { animation-delay: 0.55s; }
+.indicator .dot:nth-child(1) { animation-delay: 0s; }
+.indicator .dot:nth-child(2) { animation-delay: 10s; }
+.indicator .dot:nth-child(3) { animation-delay: 20s; }
+.indicator .dot:nth-child(4) { animation-delay: 30s; }
 
-@keyframes rise {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes dot-cycle {
+  0%, 75%, 100% { opacity: 0.4; background: var(--ink-mute); }
+  6%, 25% { opacity: 1; background: var(--accent); }
 }
 
-/* Help hint about the widget */
+@media (max-width: 900px) {
+  .indicator { display: none; }
+}
+
 .widget-hint {
   position: fixed;
   bottom: 110px;
@@ -383,7 +404,7 @@ footer a:hover { color: var(--accent); }
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--ink-mute);
-  z-index: 999;
+  z-index: 6;
   pointer-events: none;
   animation: rise 1.5s ease 1.5s backwards;
   text-align: right;
@@ -405,12 +426,41 @@ footer a:hover { color: var(--accent); }
 
 @media (max-width: 600px) {
   .widget-hint { display: none; }
+  main { padding: 24px 24px; }
+}
+
+.hero > * { animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.hero-left .tag { animation-delay: 0.05s; }
+.hero h1 { animation-delay: 0.15s; }
+.kanji { animation-delay: 0.25s; }
+.lede { animation-delay: 0.35s; }
+.cta-group { animation-delay: 0.45s; }
+.card { animation-delay: 0.55s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 </style>
 </head>
 <body>
 
-<div class="watermark">静</div>
+<div class="hero-bg" aria-hidden="true">
+  <div class="slide"></div>
+  <div class="slide"></div>
+  <div class="slide"></div>
+  <div class="slide"></div>
+</div>
+
+<div class="indicator">
+  <span>SCENE</span>
+  <div class="dots">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
 
 <main>
   <nav>
@@ -474,21 +524,8 @@ footer a:hover { color: var(--accent); }
   Need help?<br>Talk to Brian
 </div>
 
-<!--
-============================================================
-ZENDESK WEB WIDGET EMBED GOES BELOW THIS LINE
-============================================================
-Paste the script snippet from Zendesk Admin Centre here.
-It will look something like:
-
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=YOUR_KEY_HERE"></script>
-
-The widget will appear automatically in the bottom-right corner.
-============================================================
--->
-
 <!-- Start of herocorp-71942 Zendesk Widget script -->
-<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=acc4d066-f09c-4a37-afa6-947165b3b2f1"> </script>
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=acc4d066-f09c-4a37-afa6-947165b3b2f1"></script>
 <!-- End of herocorp-71942 Zendesk Widget script -->
 
 </body>
