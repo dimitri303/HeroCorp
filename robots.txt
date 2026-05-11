@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Zendesk web crawler
+User-agent: Zendesk/External-Content
+Allow: /
+
+Sitemap: https://dimitri303.github.io/HeroCorp/sitemap.xml
