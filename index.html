@@ -526,6 +526,24 @@ footer a:hover { color: var(--accent); }
 
 <!-- Start of herocorp-71942 Zendesk Widget script -->
 <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=acc4d066-f09c-4a37-afa6-947165b3b2f1"></script>
+
+<script>
+  // Demo metadata for Sarah Thompson / Hush beta
+  // These values are applied to the Zendesk ticket when the messaging ticket is created.
+
+  zE("messenger:set", "conversationFields", [
+    { id: "5761639010207", value: "48 hours" },
+    { id: "5761686743839", value: "HC-82731" }
+  ]);
+
+  zE("messenger:set", "conversationTags", [
+    "vip_streamer",
+    "creator_partner",
+    "hush_beta",
+    "time_in_game_48_hours",
+    "platform_pc_steam"
+  ]);
+</script>
 <!-- End of herocorp-71942 Zendesk Widget script -->
 
 </body>
